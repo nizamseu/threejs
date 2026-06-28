@@ -15,14 +15,16 @@ meshRef.current.rotation.y+=delta
 
   return (
     <>
+    <directionalLight position={[1,2,3]} intensity={5.5} />
+    <ambientLight intensity={1.5} />
      <axesHelper args={[5]} /> 
       <mesh ref={meshRef} position={[0, 0, 0]} scale={1} >
         <boxGeometry />
-        <meshBasicMaterial color="blue" opacity={1.15} wireframe />
+        <meshStandardMaterial color="blue" opacity={1.15} wireframe />
       </mesh>
       <mesh  position={[1, 1, 1]}>
         <sphereGeometry />
-        <meshBasicMaterial color="orange" opacity={0.9} />
+        <meshStandardMaterial color="orange" opacity={0.9} />
       </mesh>
       {/* <mesh>
         <torusKnotGeometry  />
@@ -30,7 +32,7 @@ meshRef.current.rotation.y+=delta
       </mesh> */}
       <mesh position-y={-1} rotation-x={-Math.PI *.5} scale={[10,10,10]}>
         <planeGeometry />
-        <meshBasicMaterial color="greenyellow"  />
+        <meshStandardMaterial color="greenyellow"  />
       </mesh>
       <OrbitControls />
     </>
