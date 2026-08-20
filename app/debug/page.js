@@ -1,7 +1,7 @@
 "use client";
 import { Canvas, useFrame } from '@react-three/fiber'
 import { useRef } from 'react';
-import { OrbitControls } from '@react-three/drei';
+import { OrbitControls, BakeShadows } from '@react-three/drei';
 import { useControls } from 'leva';
 import dynamic from 'next/dynamic';
 import { Stats } from '@react-three/drei';
@@ -28,19 +28,27 @@ function Scene() {
         // console.log("state", state.camera);
 
         // meshRef.current.rotation.x += delta
-        // meshRef.current.rotation.y += delta
+        meshRef.current.rotation.y += delta * .5
 
 
     });
 
     return (
         <>
+            <BakeShadows />
+            <color args={['ivory']} attach="background" />
 
-            <directionalLight position={[1, 2, 3]} intensity={5.5} />
+            <directionalLight
+                castShadow
+                position={[1, 2, 3]}
+                intensity={5.5}
+                shadow-mapSize={[2048, 2048]}
+
+            />
             <ambientLight intensity={1.5} />
             {/* <axesHelper args={[5]} /> */}
 
-            <mesh visible={visible} ref={meshRef} position={[position.x, position.y, 0]} scale={1}  >
+            <mesh castShadow visible={visible} ref={meshRef} position={[position.x, position.y, 0]} scale={1}  >
                 <boxGeometry />
                 <meshStandardMaterial color={color} opacity={1.15}
                     wireframe={wireframe}
@@ -48,7 +56,7 @@ function Scene() {
             </mesh>
 
 
-            <mesh position={[0, 0, 0]} >
+            <mesh castShadow position={[0, 0, 0]} >
                 <sphereGeometry />
                 <meshStandardMaterial color="orange" opacity={0.9} />
 
@@ -56,7 +64,7 @@ function Scene() {
 
 
 
-            <mesh position-y={-1} rotation-x={-Math.PI * .5} scale={[10, 10, 10]}>
+            <mesh receiveShadow position-y={-1} rotation-x={-Math.PI * .5} scale={[10, 10, 10]}>
                 <planeGeometry />
                 <meshStandardMaterial color="greenyellow" />
 
@@ -67,15 +75,23 @@ function Scene() {
     );
 }
 
-export default function Home() {
+
+const created = (state) => {
+    state.gl.setClearColor("gray", 1)
+
+}
+export default function Debug() {
     const perfVisible = useControls("perfVisible", {
         visible: true
     })
     return (
         <div className="w-screen h-screen">
-            <Canvas>
-                {perfVisible?.visible ? <Perf position="bottom-right" /> : null}
-                <Stats className="!top-20 !left-4" />
+            <Canvas
+                shadows
+            // onCreated={created}
+            >
+                {perfVisible?.visible ? <Perf position="top-left" /> : null}
+                {/* <Stats className="!top-20 !left-4" /> */}
                 <Scene />
             </Canvas>
         </div>
