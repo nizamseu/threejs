@@ -7,7 +7,7 @@ import { useState } from "react";
 const navLinks = [
   { name: "Home", href: "/" },
   { name: "Debug", href: "/debug" },
-  { name: "Projects", href: "/projects" },
+  { name: "model", href: "/model" },
   { name: "Gallery", href: "/gallery" },
   { name: "Contact", href: "/contact" },
 ];
@@ -39,8 +39,8 @@ export default function Navbar() {
                   key={link.name}
                   href={link.href}
                   className={`relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${isActive
-                      ? "text-white bg-neutral-800/80 shadow-inner border border-neutral-700/60"
-                      : "text-neutral-400 hover:text-white hover:bg-neutral-900/60"
+                    ? "text-white bg-neutral-800/80 shadow-inner border border-neutral-700/60"
+                    : "text-neutral-400 hover:text-white hover:bg-neutral-900/60"
                     }`}
                 >
                   {link.name}
@@ -96,8 +96,8 @@ export default function Navbar() {
                 href={link.href}
                 onClick={() => setIsOpen(false)}
                 className={`block px-3 py-2 rounded-lg text-base font-medium transition-colors ${isActive
-                    ? "text-white bg-neutral-800 font-semibold"
-                    : "text-neutral-400 hover:text-white hover:bg-neutral-900"
+                  ? "text-white bg-neutral-800 font-semibold"
+                  : "text-neutral-400 hover:text-white hover:bg-neutral-900"
                   }`}
               >
                 {link.name}
