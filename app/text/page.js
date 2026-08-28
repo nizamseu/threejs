@@ -1,11 +1,11 @@
 "use client";
 import { Canvas, useFrame, useLoader } from '@react-three/fiber'
 
-import { OrbitControls, Text3D, Center } from '@react-three/drei';
+import { OrbitControls, Text3D, Center, useMatcapTexture } from '@react-three/drei';
 import { useControls } from 'leva';
 import dynamic from 'next/dynamic';
 import * as THREE from 'three'
-import { Suspense } from 'react';
+import { Suspense, useState } from 'react';
 
 
 const Perf = dynamic(
@@ -16,17 +16,20 @@ const Perf = dynamic(
 
 
 function Scene() {
-
+    const [torusGeo, setTorusGeo] = useState(null)
+    const [matcapTexture] = useMatcapTexture("713A28_A87661_3A160D_9B6454", 256)
+    console.log(matcapTexture);
 
     return (
         <>
             <OrbitControls makeDefault />
-            <mesh scale={1.5} position={[-2.5, 0, 0]}>
+            {/* <mesh scale={1.5} position={[-2.5, 0, 0]}>
                 <boxGeometry />
                 <meshNormalMaterial />
-            </mesh>
+            </mesh> */}
+            <torusGeometry ref={setTorusGeo} args={[1, 0.6, 16, 32]} />
             <Suspense fallback={null}>
-                <Center position={[1.5, 0, 0]}>
+                <Center >
                     <Text3D
                         font="/fonts/helvetiker_regular.typeface.json"
                         size={0.75}
@@ -39,10 +42,29 @@ function Scene() {
                         bevelSegments={5}
                     >
                         Hello 3D
-                        <meshNormalMaterial />
+                        <meshMatcapMaterial matcap={matcapTexture} />
                     </Text3D>
                 </Center>
             </Suspense>
+            {[...Array(100)].map((_, i) => (
+                <mesh key={i}
+                    position={[
+                        (Math.random() - 0.5) * 10,
+                        (Math.random() - 0.5) * 10,
+                        (Math.random() - 0.5) * 10,
+                    ]}
+                    scale={0.2 + Math.random() * 0.2}
+                    rotation={[
+                        Math.random() * Math.PI,
+                        Math.random() * Math.PI,
+                        0
+                    ]}
+                    geometry={torusGeo}
+                >
+
+                    <meshMatcapMaterial matcap={matcapTexture} />
+                </mesh>
+            ))}
 
         </>
     );
